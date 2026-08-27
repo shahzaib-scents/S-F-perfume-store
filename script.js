@@ -91,10 +91,33 @@ document.getElementById("checkout-form").addEventListener("submit", e => {
   const total = cart.reduce((s, x) => {
     const p = PRODUCTS.find(p => p.id === x.id); return s + p.price * x.qty;
   }, 0);
+    function sendToWhatsApp(productName, price) {
+    // Get data from the form
+    let name = document.getElementById('customer-name').value;
+    let address = document.getElementById('customer-address').value;
+    let phone = document.getElementById('customer-phone').value;
 
-  const message = `Hello S&F Perfume!%0A%0AI want to place an order:%0A${encodeURIComponent(lines.join("\n"))}%0A%0AProducts total: ${encodeURIComponent(money(total))}%0ADelivery advance: Rs. 250%0A%0ACustomer name: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AAddress: ${encodeURIComponent(address)}`;
+    // Check if form is empty
+    if(!name || !address || !phone) {
+        alert('Please fill in Name, Address and Phone Number first');
+        return;
+    }
 
-  window.open(`https://wa.me/923124974060?text=${message}`, "_blank");
+    // Create WhatsApp message
+    let message = `*New Order* 📦%0A%0A`;
+    message += `*Product:* ${productName}%0A`;
+    message += `*Price:* ${price} PKR%0A%0A`;
+    message += `*Name:* ${name}%0A`;
+    message += `*Address:* ${address}%0A`;
+    message += `*Phone:* ${phone}%0A%0A`;
+    message += `Please contact me soon. Thank you!`;
+
+    // Put your WhatsApp number here - without +
+    let whatsappNumber = `923124974060`; 
+    
+    let url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+}
 });
 
 renderProducts();
