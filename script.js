@@ -124,9 +124,6 @@ document.getElementById("checkout-form").addEventListener("submit", e => {
   
   window.open(url, '_blank');
 }
-
 renderProducts();
 updateCart();
-
-renderProducts();
 updateCart();
