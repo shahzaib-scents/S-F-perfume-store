@@ -11,9 +11,9 @@ const PRODUCTS = [
     size: "50ml",
     lasting: "17+ hours",
     description: "A premium feminine fragrance with an elegant, memorable character.",
-    image: "images/elysia.jpg"
+    image: "/images/elysia.jpg"
   },
-  { 
+  {
     id: "sterling",
     name: "Sterling by S&F",
     price: 2350,
@@ -21,6 +21,6 @@ const PRODUCTS = [
     size: "50ml",
     lasting: "20+ hours",
     description: "A premium masculine fragrance with a bold and refined character.",
-    image: "images/sterling.jpg"
+    image: "/images/sterling.jpg"
   }
 ];
