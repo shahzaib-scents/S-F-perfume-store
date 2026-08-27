@@ -32,7 +32,6 @@ function renderProducts() {
         <p>${p.description}</p>
         <div class="price"><del>${money(p.oldPrice)}</del> <strong>${money(p.price)}</strong></div>
         <button class="button full" onclick="addToCart('${p.id}')">Add to Cart</button>
-      </div>
     </article>
   `).join("");
 }
