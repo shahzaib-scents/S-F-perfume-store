@@ -1,26 +1,3 @@
-const PRODUCTS = [
-  {
-    id: 1, 
-    name: "Sterling by S&F", 
-    price: 2350, 
-    oldPrice: 2600, 
-    size: "50ml", 
-    lasting: "20+ hours", 
-    description: "Premium Quality ExtraIt De Parfume. For Men", 
-    image: "images/sterling.jpg",
-  },
-  {
-    id: 2, 
-    name: "Elysia by S&F", 
-    price: 2499, 
-    oldPrice: 2750, 
-    size: "50ml", 
-    lasting: "17+ hours", 
-    description: "Premium Quality ExtraIt De Parfume. For Women", 
-    image: "images/elysia.jpg",
-  }
-];
-
 let cart = [];
 function money(n){ return `Rs. ${n.toLocaleString('en-PK')}`; }
 function renderProducts() {
