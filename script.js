@@ -4,6 +4,7 @@ function renderProducts() {
   const grid = document.getElementById('products-grid');
   grid.innerHTML = PRODUCTS.map(p => `
     <article class="product">
+    <img src="${p.image}" alt="${p.name}" class="product-image">
         <p class="eyebrow">${p.size} • ${p.lasting}</p>
         <h3>${p.name}</h3>
         <p>${p.description}</p>
