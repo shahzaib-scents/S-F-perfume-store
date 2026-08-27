@@ -120,8 +120,5 @@ document.getElementById("checkout-form").addEventListener("submit", e => {
   window.open(url, '_blank');
 });
 
-123 function openCart(){ document.getElementById('cart-drawer').classList.add('open'); }
-124 function openCart(){ document.getElementById('cart-drawer').classList.remove('open'); }
-
 renderProducts();
 updateCart();
