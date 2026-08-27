@@ -7,7 +7,7 @@ const PRODUCTS = [
     size: "50ml", 
     lasting: "20+ hours", 
     description: "Premium Quality ExtraIt De Parfume. For Men", 
-    image: "sterling.jpg"
+    image: "images/sterling.jpg",
   },
   {
     id: 2, 
@@ -17,7 +17,7 @@ const PRODUCTS = [
     size: "50ml", 
     lasting: "17+ hours", 
     description: "Premium Quality ExtraIt De Parfume. For Women", 
-    image: "elysia.jpg"
+    image: "images/elysia.jpg",
   }
 ];
 
