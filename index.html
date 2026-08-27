@@ -64,14 +64,17 @@
       <button class="close" onclick="closeCart()">×</button>
       <h2>Your Cart</h2>
       <div id="cart-items"></div>
-      <div class="cart-total">
-        <span>Products</span><strong id="cart-total">Rs. 0</strong>
-      </div>
+      67  <div class="cart-total">
+  <span>Products</span><strong id="cart-total">Rs. 0</strong>
+</div>
+<div class="checkout-form">
+  <input type="text" id="customer-name" placeholder="Your Name" required>
+  <input type="text" id="customer-address" placeholder="Your Address" required>
+  <input type="tel" id="customer-phone" placeholder="Your Phone" required>
+  <button class="whatsapp-btn" onclick="sendToWhatsApp()">Go to WhatsApp</button>
+</div>
       <div class="advance">Delivery advance: <strong>Rs. 250</strong></div>
-      <button class="button full" onclick="openCheckout()">Proceed to Checkout</button>
     </div>
-  </div>
-
   <div id="checkout" class="modal" aria-hidden="true">
     <div class="checkout-card">
       <button class="close" onclick="closeCheckout()">×</button>
