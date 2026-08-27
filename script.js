@@ -1,15 +1,32 @@
+const PRODUCTS = [
+  {
+    id: 1, 
+    name: "Sterling by S&F", 
+    price: 2350, 
+    oldPrice: 2600, 
+    size: "50ml", 
+    lasting: "20+ hours", 
+    description: "Premium Quality ExtraIt De Parfume. For Men", 
+    image: "sterling.jpg"
+  },
+  {
+    id: 2, 
+    name: "Elysia by S&F", 
+    price: 2499, 
+    oldPrice: 2750, 
+    size: "50ml", 
+    lasting: "17+ hours", 
+    description: "Premium Quality ExtraIt De Parfume. For Women", 
+    image: "elysia.jpg"
+  }
+];
+
 let cart = [];
-
-function money(n) {
-  return `Rs. ${n.toLocaleString("en-PK")}`;
-}
-
+function money(n){ return `Rs. ${n.toLocaleString('en-PK')}`; }
 function renderProducts() {
-  const grid = document.getElementById("product-grid");
+  const grid = document.getElementById('products-grid');
   grid.innerHTML = PRODUCTS.map(p => `
-    <article class="product-card">
-      <div class="product-image"><img src="${p.image}" alt="${p.name}"></div>
-      <div class="product-info">
+    <article class="product">
         <p class="eyebrow">${p.size} • ${p.lasting}</p>
         <h3>${p.name}</h3>
         <p>${p.description}</p>
@@ -91,39 +108,20 @@ document.getElementById("checkout-form").addEventListener("submit", e => {
   const total = cart.reduce((s, x) => {
     const p = PRODUCTS.find(p => p.id === x.id); return s + p.price * x.qty;
   }, 0);
-    function sendToWhatsApp() {
-  const name = document.getElementById('customer-name').value;
-  const address = document.getElementById('customer-address').value;
-  const phone = document.getElementById('customer-phone').value;
-  
-  if(!name || !address || !phone) {
-    alert('Please fill in Name, Address and Phone Number first');
-    return;
-  }
-
-  let message = `*New Order from S&F Perfume Store* %0A%0A`;
-  
-  cart.forEach(item => {
-    const p = PRODUCTS.find(p => p.id === item.id);
-    message += `*Product:* ${p.name} x${item.qty} = ${money(p.price * item.qty)}%0A`;
-  });
-  
-  const total = cart.reduce((s, x) => {
-    const p = PRODUCTS.find(p => p.id === x.id); 
-    return s + p.price * x.qty;
-  }, 0);
-
-  message += `%0A*Total:* ${money(total)}%0A`;
+    let message = `*New Order from S&F Perfume Store* %0A%0A`;
+  message += lines.join('%0A');
+  message += `%0A%0A*Total:* ${money(total)}%0A`;
   message += `*Name:* ${name}%0A`;
   message += `*Phone:* ${phone}%0A`;
-  message += `*Address:* ${address}%0A%0A`;
-  message += `Delivery Advance: Rs. 250`;
+  message += `*Address:* ${address}`;
 
   const whatsappNumber = "923124974060";
-  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-  
+  const url = `https://wa.me/${whatsappNumber}?text=${message}`;
   window.open(url, '_blank');
-}
+});
+
+123 function openCart(){ document.getElementById('cart-drawer').classList.add('open'); }
+124 function openCart(){ document.getElementById('cart-drawer').classList.remove('open'); }
+
 renderProducts();
-updateCart();
 updateCart();
