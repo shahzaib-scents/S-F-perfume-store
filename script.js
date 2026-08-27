@@ -91,34 +91,42 @@ document.getElementById("checkout-form").addEventListener("submit", e => {
   const total = cart.reduce((s, x) => {
     const p = PRODUCTS.find(p => p.id === x.id); return s + p.price * x.qty;
   }, 0);
-    function sendToWhatsApp(productName, price) {
-    // Get data from the form
-    let name = document.getElementById('customer-name').value;
-    let address = document.getElementById('customer-address').value;
-    let phone = document.getElementById('customer-phone').value;
+    function sendToWhatsApp() {
+  const name = document.getElementById('customer-name').value;
+  const address = document.getElementById('customer-address').value;
+  const phone = document.getElementById('customer-phone').value;
+  
+  if(!name || !address || !phone) {
+    alert('Please fill in Name, Address and Phone Number first');
+    return;
+  }
 
-    // Check if form is empty
-    if(!name || !address || !phone) {
-        alert('Please fill in Name, Address and Phone Number first');
-        return;
-    }
+  let message = `*New Order from S&F Perfume Store* %0A%0A`;
+  
+  cart.forEach(item => {
+    const p = PRODUCTS.find(p => p.id === item.id);
+    message += `*Product:* ${p.name} x${item.qty} = ${money(p.price * item.qty)}%0A`;
+  });
+  
+  const total = cart.reduce((s, x) => {
+    const p = PRODUCTS.find(p => p.id === x.id); 
+    return s + p.price * x.qty;
+  }, 0);
 
-    // Create WhatsApp message
-    let message = `*New Order* 📦%0A%0A`;
-    message += `*Product:* ${productName}%0A`;
-    message += `*Price:* ${price} PKR%0A%0A`;
-    message += `*Name:* ${name}%0A`;
-    message += `*Address:* ${address}%0A`;
-    message += `*Phone:* ${phone}%0A%0A`;
-    message += `Please contact me soon. Thank you!`;
+  message += `%0A*Total:* ${money(total)}%0A`;
+  message += `*Name:* ${name}%0A`;
+  message += `*Phone:* ${phone}%0A`;
+  message += `*Address:* ${address}%0A%0A`;
+  message += `Delivery Advance: Rs. 250`;
 
-    // Put your WhatsApp number here - without +
-    let whatsappNumber = `923124974060`; 
-    
-    let url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-    window.open(url, '_blank');
+  const whatsappNumber = "923124974060";
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  
+  window.open(url, '_blank');
 }
-});
+
+renderProducts();
+updateCart();
 
 renderProducts();
 updateCart();
