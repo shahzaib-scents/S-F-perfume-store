@@ -99,3 +99,42 @@ document.getElementById("checkout-form").addEventListener("submit", e => {
 
 renderProducts();
 updateCart();
+function sendToWhatsApp() {
+  if (!cart.length) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  const name = document.getElementById("customer-name-cart").value.trim();
+  const address = document.getElementById("customer-address-cart").value.trim();
+  const phone = document.getElementById("customer-phone-cart").value.trim();
+
+  if (!name || !address || !phone) {
+    alert("Please enter your name, address and phone number.");
+    return;
+  }
+
+  const lines = cart.map(x => {
+    const p = PRODUCTS.find(p => p.id === x.id);
+    return `${p.name} × ${x.qty} — Rs. ${p.price * x.qty}`;
+  });
+
+  const total = cart.reduce((s, x) => {
+    const p = PRODUCTS.find(p => p.id === x.id);
+    return s + p.price * x.qty;
+  }, 0);
+
+  const message =
+    `New Order from S&F Perfume Store\n\n` +
+    `Products:\n${lines.join("\n")}\n\n` +
+    `Total: Rs. ${total}\n` +
+    `Delivery Advance: Rs. 250\n\n` +
+    `Name: ${name}\n` +
+    `Phone: ${phone}\n` +
+    `Address: ${address}`;
+
+  const whatsappNumber = "923124974060";
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+  window.open(url, "_blank");
+}
