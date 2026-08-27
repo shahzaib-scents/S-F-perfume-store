@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S&F Perfume | Premium Fragrances</title>
+  <meta name="description" content="S&F Perfume — premium fragrances with WhatsApp ordering.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="nav">
+    <a class="logo" href="#home">S&F <span>PERFUME</span></a>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#products">Shop</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <img src="images/sf-banner.png" alt="S&F Elysia and Sterling perfumes">
+      <div class="hero-content">
+        <p class="eyebrow">S&F PERFUME</p>
+        <h1>Find Your Signature Scent</h1>
+        <p>Premium fragrances crafted for memorable moments.</p>
+        <a class="button" href="#products">Shop Now</a>
+      </div>
+    </section>
+
+    <section id="products" class="section">
+      <div class="section-heading">
+        <p class="eyebrow">OUR COLLECTION</p>
+        <h2>Featured Fragrances</h2>
+        <p>Order directly through WhatsApp. Rs. 250 delivery charges are paid in advance.</p>
+      </div>
+      <div id="product-grid" class="products"></div>
+    </section>
+
+    <section id="about" class="about section">
+      <div>
+        <p class="eyebrow">ABOUT S&F</p>
+        <h2>Premium fragrance, simple ordering.</h2>
+        <p>S&F brings premium fragrances to you with an easy online shopping experience. Choose your fragrance, add it to your cart, enter your details and send the order directly to WhatsApp.</p>
+      </div>
+      <div class="info-card">
+        <strong>Delivery Advance</strong>
+        <span>Rs. 250</span>
+        <small>Paid in advance toward delivery charges.</small>
+      </div>
+    </section>
+
+    <section id="contact" class="section contact">
+      <p class="eyebrow">CONTACT</p>
+      <h2>Ready to order?</h2>
+      <p>Message S&F on WhatsApp for your order.</p>
+      <a class="button" href="https://wa.me/923124974060" target="_blank" rel="noopener">WhatsApp Us</a>
+    </section>
+  </main>
+
+  <div id="cart-drawer" class="cart-drawer" aria-hidden="true">
+    <div class="cart-panel">
+      <button class="close" onclick="closeCart()">×</button>
+      <h2>Your Cart</h2>
+      <div id="cart-items"></div>
+      <div class="cart-total">
+        <span>Products</span><strong id="cart-total">Rs. 0</strong>
+      </div>
+      <div class="advance">Delivery advance: <strong>Rs. 250</strong></div>
+      <button class="button full" onclick="openCheckout()">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <div id="checkout" class="modal" aria-hidden="true">
+    <div class="checkout-card">
+      <button class="close" onclick="closeCheckout()">×</button>
+      <h2>Checkout</h2>
+      <p>Enter your details. Your order will open in WhatsApp.</p>
+      <form id="checkout-form">
+        <input id="customer-name" placeholder="Full name" required>
+        <input id="customer-phone" placeholder="Phone number" required>
+        <textarea id="customer-address" placeholder="Complete delivery address" rows="4" required></textarea>
+        <div class="order-summary" id="order-summary"></div>
+        <button class="button full" type="submit">Place Order on WhatsApp</button>
+      </form>
+    </div>
+  </div>
+
+  <button class="cart-float" onclick="openCart()">Cart <span id="cart-count">0</span></button>
+  <footer>© 2026 S&F Perfume. All rights reserved.</footer>
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
