@@ -13,8 +13,7 @@ const PRODUCTS = [
     description: "A premium feminine fragrance with an elegant, memorable character.",
     image: "images/elysia.jpg"
   },
-  {
-    https://github.com/shahzaib-scents/S-F-perfume-store/blob/main/WhatsApp%20Image%202026-08-27%20at%2011.35.49%20AM.jpeg 
+  { 
     id: "sterling",
     name: "Sterling by S&F",
     price: 2350,
