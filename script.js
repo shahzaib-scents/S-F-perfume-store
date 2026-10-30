@@ -1,6 +1,6 @@
 let cart = [];
 
-const WHATSAPP_NUMBER = "923124974060";
+const ORDER_EMAIL = "shahzaibsarwar2006@gmail.com";
 const DELIVERY_ADVANCE = 250;
 
 function money(n) {
@@ -84,8 +84,7 @@ function closeCart() {
   document.getElementById("cart-drawer").setAttribute("aria-hidden", "true");
 }
 
-// A timestamp-based reference works on this static website without a server.
-// A central sequential order counter would require a shared database/backend.
+// This static-site order reference is unique-looking, but is not a central sequential counter.
 function createOrderNumber() {
   const date = new Date();
   const datePart = [
@@ -93,11 +92,11 @@ function createOrderNumber() {
     String(date.getMonth() + 1).padStart(2, "0"),
     String(date.getDate()).padStart(2, "0")
   ].join("");
-  const randomPart = Math.random().toString(36).slice(2, 6).toUpperCase();
+  const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase();
   return `SF-${datePart}-${randomPart}`;
 }
 
-document.getElementById("order-form").addEventListener("submit", function (event) {
+document.getElementById("order-form").addEventListener("submit", async function (event) {
   event.preventDefault();
 
   if (!cart.length) {
@@ -109,6 +108,8 @@ document.getElementById("order-form").addEventListener("submit", function (event
   const phone = document.getElementById("customer-phone").value.trim();
   const city = document.getElementById("customer-city").value.trim();
   const address = document.getElementById("customer-address").value.trim();
+  const status = document.getElementById("order-status");
+  const button = document.getElementById("confirm-order-btn");
 
   if (!name || !phone || !city || !address) {
     alert("Please complete all delivery details.");
@@ -118,7 +119,7 @@ document.getElementById("order-form").addEventListener("submit", function (event
   const orderNumber = createOrderNumber();
   const lines = cart.map(item => {
     const p = PRODUCTS.find(product => product.id === item.id);
-    return `• ${p.name} × ${item.qty} — ${money(p.price * item.qty)}`;
+    return `${p.name} × ${item.qty} — ${money(p.price * item.qty)}`;
   });
 
   const subtotal = cart.reduce((sum, item) => {
@@ -126,29 +127,53 @@ document.getElementById("order-form").addEventListener("submit", function (event
     return sum + p.price * item.qty;
   }, 0);
 
-  const message = [
-    "*NEW ORDER — S&F PERFUME*",
-    "",
-    `*Order No:* ${orderNumber}`,
-    "",
-    "*Products:*",
-    ...lines,
-    "",
-    `*Product Total:* ${money(subtotal)}`,
-    `*Delivery Advance:* ${money(DELIVERY_ADVANCE)}`,
-    `*Total Including Delivery Advance:* ${money(subtotal + DELIVERY_ADVANCE)}`,
-    "",
-    "*Customer Details:*",
-    `*Name:* ${name}`,
-    `*Phone:* ${phone}`,
-    `*City:* ${city}`,
-    `*Address:* ${address}`
-  ].join("\n");
+  const orderData = {
+    _subject: `New S&F Website Order ${orderNumber}`,
+    _template: "table",
+    "Order Number": orderNumber,
+    "Customer Name": name,
+    "Customer Phone": phone,
+    "Customer City": city,
+    "Complete Address": address,
+    "Products": lines.join("\n"),
+    "Product Subtotal": money(subtotal),
+    "Delivery Advance": money(DELIVERY_ADVANCE),
+    "Total Including Delivery Advance": money(subtotal + DELIVERY_ADVANCE)
+  };
 
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-  window.open(whatsappUrl, "_blank", "noopener");
+  button.disabled = true;
+  button.textContent = "Submitting...";
+  status.textContent = "Submitting your order. Please wait.";
+  status.className = "order-status";
 
-  // Keep cart intact until the customer returns; WhatsApp requires the customer to press Send.
+  try {
+    const response = await fetch(`https://formsubmit.co/ajax/${ORDER_EMAIL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify(orderData)
+    });
+
+    const result = await response.json();
+    if (!response.ok || result.success !== "true") {
+      throw new Error(result.message || "Order could not be submitted.");
+    }
+
+    status.textContent = `Thank you! Your order has been submitted. Your order number is ${orderNumber}. S&F will contact you soon.`;
+    status.className = "order-status success";
+    cart = [];
+    updateCart();
+    document.getElementById("order-form").reset();
+  } catch (error) {
+    console.error("Order submission error:", error);
+    status.textContent = "Sorry, your order could not be submitted right now. Please try again in a moment or contact S&F on WhatsApp.";
+    status.className = "order-status error";
+  } finally {
+    button.disabled = false;
+    button.textContent = "Confirm Order";
+  }
 });
 
 renderProducts();

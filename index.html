@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>S&F Perfume | Premium Fragrances</title>
-  <meta name="description" content="S&F Perfume — premium fragrances with WhatsApp ordering.">
+  <meta name="description" content="S&F Perfume — premium fragrances with easy online ordering.">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,7 +33,7 @@
       <div class="section-heading">
         <p class="eyebrow">OUR COLLECTION</p>
         <h2>Featured Fragrances</h2>
-        <p>Order directly through WhatsApp. Rs. 250 delivery charges are paid in advance.</p>
+        <p>Place your order directly on our website. Rs. 250 delivery charges are paid in advance.</p>
       </div>
       <div id="products-grid" class="products"></div>
     </section>
@@ -42,7 +42,7 @@
       <div>
         <p class="eyebrow">ABOUT S&F</p>
         <h2>Premium fragrance, simple ordering.</h2>
-        <p>S&F brings premium fragrances to you with an easy online shopping experience. Choose your fragrance, add it to your cart, enter your details and send the order directly to WhatsApp.</p>
+        <p>S&F brings premium fragrances to you with an easy online shopping experience. Choose your fragrance, add it to your cart, enter your delivery details and confirm your order on the website.</p>
       </div>
       <div class="info-card">
         <strong>Delivery Advance</strong>
@@ -54,7 +54,7 @@
     <section id="contact" class="section contact">
       <p class="eyebrow">CONTACT</p>
       <h2>Ready to order?</h2>
-      <p>Message S&F on WhatsApp for your order.</p>
+      <p>Have a question? Contact S&F on WhatsApp.</p>
       <a class="button" href="https://wa.me/923124974060" target="_blank" rel="noopener">WhatsApp Us</a>
     </section>
   </main>
@@ -74,8 +74,9 @@
         <input type="tel" id="customer-phone" placeholder="Phone Number" autocomplete="tel" required>
         <input type="text" id="customer-city" placeholder="City" autocomplete="address-level2" required>
         <textarea id="customer-address" placeholder="Complete Delivery Address" rows="3" autocomplete="street-address" required></textarea>
-        <button class="whatsapp-btn" type="submit">Confirm Order on WhatsApp</button>
-        <small class="checkout-note">WhatsApp will open with your order details. Please press Send in WhatsApp to submit your order.</small>
+        <button class="whatsapp-btn" id="confirm-order-btn" type="submit">Confirm Order</button>
+        <small class="checkout-note">Your order will be submitted on this website. We will contact you to confirm delivery details.</small>
+        <p id="order-status" class="order-status" role="status" aria-live="polite"></p>
       </form>
     </div>
   </div>
