@@ -1,6 +1,5 @@
 // EDIT YOUR PRODUCTS HERE.
-// To add/edit a product, change the name, price, oldPrice, description or image.
-// After saving this file and pushing to GitHub, Vercel will update the website.
+// Set inStock: false to show a product as OUT OF STOCK and disable ordering.
 
 const PRODUCTS = [
   {
@@ -11,7 +10,8 @@ const PRODUCTS = [
     size: "50ml",
     lasting: "17+ hours",
     description: "A premium feminine fragrance with an elegant, memorable character.",
-    image: "/images/elysia.jpg"
+    image: "/images/elysia.jpg",
+    inStock: true
   },
   {
     id: "sterling",
@@ -21,6 +21,7 @@ const PRODUCTS = [
     size: "50ml",
     lasting: "20+ hours",
     description: "A premium masculine fragrance with a bold and refined character.",
-    image: "/images/sterling.jpg"
+    image: "/images/sterling.jpg",
+    inStock: false
   }
 ];
