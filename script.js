@@ -1,72 +1,46 @@
 let cart = [];
-
-const ORDER_EMAIL = "shahzaibsarwar2006@gmail.com";
-const DELIVERY_ADVANCE = 250;
-
-function money(n) {
-  return `Rs. ${Number(n).toLocaleString("en-PK")}`;
-}
-
+function money(n){ return `Rs. ${n.toLocaleString('en-PK')}`; }
 function renderProducts() {
-  const grid = document.getElementById("products-grid");
+  const grid = document.getElementById('products-grid');
   grid.innerHTML = PRODUCTS.map(p => `
-    <article class="product ${p.inStock ? "" : "out-of-stock"}">
-      <div class="product-photo-wrap">
-        <img src="${p.image}" alt="${p.name}" class="product-image">
-        ${p.inStock ? "" : '<span class="stock-label">OUT OF STOCK</span>'}
-      </div>
-      <div class="product-info">
+    <article class="product">
+    <img src="${p.image}" alt="${p.name}" class="product-image">
         <p class="eyebrow">${p.size} • ${p.lasting}</p>
         <h3>${p.name}</h3>
         <p>${p.description}</p>
         <div class="price"><del>${money(p.oldPrice)}</del> <strong>${money(p.price)}</strong></div>
-        ${p.inStock
-          ? `<button class="button full" type="button" onclick="addToCart('${p.id}')">Add to Cart</button>`
-          : '<button class="button full disabled-button" type="button" disabled>Out of Stock</button>'}
-      </div>
+        <button class="button full" onclick="addToCart('${p.id}')">Add to Cart</button>
     </article>
   `).join("");
 }
 
 function addToCart(id) {
-  const product = PRODUCTS.find(p => p.id === id);
-  if (!product || !product.inStock) return;
   const existing = cart.find(x => x.id === id);
   if (existing) existing.qty++;
-  else cart.push({ id, qty: 1 });
+  else cart.push({id, qty: 1});
   updateCart();
   openCart();
 }
 
 function updateCart() {
-  const count = cart.reduce((sum, item) => sum + item.qty, 0);
+  const count = cart.reduce((s, x) => s + x.qty, 0);
   document.getElementById("cart-count").textContent = count;
   const box = document.getElementById("cart-items");
-
   if (!cart.length) {
     box.innerHTML = "<p>Your cart is empty.</p>";
   } else {
     box.innerHTML = cart.map(item => {
-      const p = PRODUCTS.find(product => product.id === item.id);
+      const p = PRODUCTS.find(x => x.id === item.id);
       return `<div class="cart-item">
-        <img src="${p.image}" alt="${p.name}">
-        <div class="cart-item-details">
-          <strong>${p.name}</strong><br>${money(p.price)} × ${item.qty}
-          <div class="qty">
-            <button type="button" aria-label="Decrease quantity" onclick="changeQty('${p.id}', -1)">−</button>
-            <span>${item.qty}</span>
-            <button type="button" aria-label="Increase quantity" onclick="changeQty('${p.id}', 1)">+</button>
-          </div>
-        </div>
+        <img src="${p.image}" alt="">
+        <div><strong>${p.name}</strong><br>${money(p.price)} × ${item.qty}
+        <div class="qty"><button onclick="changeQty('${p.id}', -1)">−</button><span>${item.qty}</span><button onclick="changeQty('${p.id}', 1)">+</button></div></div>
       </div>`;
     }).join("");
   }
-
-  const subtotal = cart.reduce((sum, item) => {
-    const p = PRODUCTS.find(product => product.id === item.id);
-    return sum + p.price * item.qty;
-  }, 0);
-  document.getElementById("cart-total").textContent = money(subtotal);
+  document.getElementById("cart-total").textContent = money(cart.reduce((s, x) => {
+    const p = PRODUCTS.find(p => p.id === x.id); return s + p.price * x.qty;
+  }, 0));
 }
 
 function changeQty(id, delta) {
@@ -83,98 +57,84 @@ function openCart() {
 function closeCart() {
   document.getElementById("cart-drawer").setAttribute("aria-hidden", "true");
 }
-
-// This static-site order reference is unique-looking, but is not a central sequential counter.
-function createOrderNumber() {
-  const date = new Date();
-  const datePart = [
-    date.getFullYear(),
-    String(date.getMonth() + 1).padStart(2, "0"),
-    String(date.getDate()).padStart(2, "0")
-  ].join("");
-  const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase();
-  return `SF-${datePart}-${randomPart}`;
+function openCheckout() {
+  if (!cart.length) return alert("Your cart is empty.");
+  closeCart();
+  const total = cart.reduce((s, x) => {
+    const p = PRODUCTS.find(p => p.id === x.id); return s + p.price * x.qty;
+  }, 0);
+  document.getElementById("order-summary").innerHTML =
+    `<strong>Products: ${money(total)}</strong><br>Delivery advance: Rs. 250`;
+  document.getElementById("checkout").setAttribute("aria-hidden", "false");
+}
+function closeCheckout() {
+  document.getElementById("checkout").setAttribute("aria-hidden", "true");
 }
 
-document.getElementById("order-form").addEventListener("submit", async function (event) {
-  event.preventDefault();
-
-  if (!cart.length) {
-    alert("Your cart is empty. Please add a product first.");
-    return;
-  }
-
+document.getElementById("checkout-form").addEventListener("submit", e => {
+  e.preventDefault();
   const name = document.getElementById("customer-name").value.trim();
   const phone = document.getElementById("customer-phone").value.trim();
-  const city = document.getElementById("customer-city").value.trim();
   const address = document.getElementById("customer-address").value.trim();
-  const status = document.getElementById("order-status");
-  const button = document.getElementById("confirm-order-btn");
 
-  if (!name || !phone || !city || !address) {
-    alert("Please complete all delivery details.");
-    return;
-  }
-
-  const orderNumber = createOrderNumber();
-  const lines = cart.map(item => {
-    const p = PRODUCTS.find(product => product.id === item.id);
-    return `${p.name} × ${item.qty} — ${money(p.price * item.qty)}`;
+  const lines = cart.map(x => {
+    const p = PRODUCTS.find(p => p.id === x.id);
+    return `• ${p.name} × ${x.qty} — ${money(p.price * x.qty)}`;
   });
 
-  const subtotal = cart.reduce((sum, item) => {
-    const p = PRODUCTS.find(product => product.id === item.id);
-    return sum + p.price * item.qty;
+  const total = cart.reduce((s, x) => {
+    const p = PRODUCTS.find(p => p.id === x.id); return s + p.price * x.qty;
   }, 0);
+    let message = `*New Order from S&F Perfume Store* %0A%0A`;
+  message += lines.join('%0A');
+  message += `%0A%0A*Total:* ${money(total)}%0A`;
+  message += `*Name:* ${name}%0A`;
+  message += `*Phone:* ${phone}%0A`;
+  message += `*Address:* ${address}`;
 
-  const orderData = {
-    _subject: `New S&F Website Order ${orderNumber}`,
-    _template: "table",
-    "Order Number": orderNumber,
-    "Customer Name": name,
-    "Customer Phone": phone,
-    "Customer City": city,
-    "Complete Address": address,
-    "Products": lines.join("\n"),
-    "Product Subtotal": money(subtotal),
-    "Delivery Advance": money(DELIVERY_ADVANCE),
-    "Total Including Delivery Advance": money(subtotal + DELIVERY_ADVANCE)
-  };
-
-  button.disabled = true;
-  button.textContent = "Submitting...";
-  status.textContent = "Submitting your order. Please wait.";
-  status.className = "order-status";
-
-  try {
-    const response = await fetch(`https://formsubmit.co/ajax/${ORDER_EMAIL}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(orderData)
-    });
-
-    const result = await response.json();
-    if (!response.ok || result.success !== "true") {
-      throw new Error(result.message || "Order could not be submitted.");
-    }
-
-    status.textContent = `Thank you! Your order has been submitted. Your order number is ${orderNumber}. S&F will contact you soon.`;
-    status.className = "order-status success";
-    cart = [];
-    updateCart();
-    document.getElementById("order-form").reset();
-  } catch (error) {
-    console.error("Order submission error:", error);
-    status.textContent = "Sorry, your order could not be submitted right now. Please try again in a moment or contact S&F on WhatsApp.";
-    status.className = "order-status error";
-  } finally {
-    button.disabled = false;
-    button.textContent = "Confirm Order";
-  }
+  const whatsappNumber = "923124974060";
+  const url = `https://wa.me/${whatsappNumber}?text=${message}`;
+  window.open(url, '_blank');
 });
 
 renderProducts();
 updateCart();
+function sendToWhatsApp() {
+  if (!cart.length) {
+    alert("Your cart is empty.");
+    return;
+  }
+
+  const name = document.getElementById("customer-name-cart").value.trim();
+  const address = document.getElementById("customer-address-cart").value.trim();
+  const phone = document.getElementById("customer-phone-cart").value.trim();
+
+  if (!name || !address || !phone) {
+    alert("Please enter your name, address and phone number.");
+    return;
+  }
+
+  const lines = cart.map(x => {
+    const p = PRODUCTS.find(p => p.id === x.id);
+    return `${p.name} × ${x.qty} — Rs. ${p.price * x.qty}`;
+  });
+
+  const total = cart.reduce((s, x) => {
+    const p = PRODUCTS.find(p => p.id === x.id);
+    return s + p.price * x.qty;
+  }, 0);
+
+  const message =
+    `New Order from S&F Perfume Store\n\n` +
+    `Products:\n${lines.join("\n")}\n\n` +
+    `Total: Rs. ${total}\n` +
+    `Delivery Advance: Rs. 250\n\n` +
+    `Name: ${name}\n` +
+    `Phone: ${phone}\n` +
+    `Address: ${address}`;
+
+  const whatsappNumber = "923124974060";
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+  window.open(url, "_blank");
+}
