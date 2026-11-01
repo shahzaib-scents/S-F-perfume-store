@@ -14,6 +14,16 @@ const PRODUCTS = [
     inStock: true
   },
   {
+    id: "monarch",
+    name: "Monarch by S&F",
+    price: 1799,
+    size: "50ml",
+    lasting: "Extrait de Parfum",
+    description: "A premium masculine fragrance with a refined, distinctive character.",
+    image: "/images/monarch.png",
+    inStock: true
+  },
+  {
     id: "sterling",
     name: "Sterling by S&F",
     price: 2350,
