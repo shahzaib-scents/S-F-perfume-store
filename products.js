@@ -10,7 +10,7 @@ const PRODUCTS = [
     size: "50ml",
     lasting: "17+ hours",
     description: "A premium feminine fragrance with an elegant, memorable character.",
-    image: "/images/elysia.jpg",
+    image: "/images/elysia.png",
     inStock: true
   },
   {
@@ -20,7 +20,7 @@ const PRODUCTS = [
     size: "50ml",
     lasting: "Extrait de Parfum",
     description: "A premium masculine fragrance with a refined, distinctive character.",
-    image: "/images/monarch.png",
+   image: "/images/monarch.png",
     inStock: true
   },
   {
@@ -30,8 +30,8 @@ const PRODUCTS = [
     oldPrice: 2600,
     size: "50ml",
     lasting: "20+ hours",
-    description: "A premium masculine fragrance with a bold and refined character.",
-    image: "/images/sterling.jpg",
+    scription: "A premium masculine fragrance with a bold and refined character.",
+    image: "/images/sterling.png",
     inStock: false
   }
 ];
